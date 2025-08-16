@@ -1,62 +1,17 @@
 import React from "react";
 import { Result } from "./page";
-import { usePathname, useRouter } from "next/navigation";
+import "react-alice-carousel/lib/alice-carousel.css";
+import "react-alice-carousel/lib/alice-carousel.css";
+import AliceCarousel from "react-alice-carousel";
 
 export function Podcasts({ list }: { list: Result[] }) {
   const [view, setView] = React.useState<"scroll" | "grid">("scroll");
-  const [indexes, setIndexes] = React.useState<number[]>([5]);
-
-  const router = useRouter();
-  const pathname = usePathname();
-
-  function scrollToNext() {
-    if (view === "grid") return;
-
-    const lastIndex = indexes[indexes.length - 1];
-    if (lastIndex === list.length - 1) return;
-
-    const nextIndex = lastIndex + 6;
-    if (list.length <= nextIndex) {
-      setIndexes([...indexes, list.length - 1]);
-    } else {
-      setIndexes([...indexes, nextIndex]);
-    }
-  }
-  function scrollToPrev() {
-    if (view === "grid") return;
-    const newIndexes = [...indexes];
-    newIndexes.pop();
-
-    setIndexes(newIndexes);
-  }
-
-  React.useEffect(
-    function scroll() {
-      const lastIndex = indexes[indexes.length - 1];
-      router.push(`${pathname}#${lastIndex}`);
-    },
-    [indexes]
-  );
-
-  const gridContainer =
-    view === "scroll"
-      ? "auto-cols-[16%]"
-      : "[grid-template-columns:repeat(6,minmax(16%,1fr))]";
-  const gridItemRow = view === "scroll" ? "row-start-1 row-end-1" : null;
 
   return (
     <div className="flex flex-col gap-4">
       <div className="text-white border-b border-b-gray-600 pb-4 flex items-center justify-between">
         <span>Top Podcasts</span>
         <div className="flex gap-3">
-          <div className="flex gap-2">
-            <button onClick={scrollToPrev}>
-              <PreviousIcon />
-            </button>
-            <button onClick={scrollToNext}>
-              <NextIcon />
-            </button>
-          </div>
           <button
             className="bg-blue-950 rounded-lg shrink-0 py-2 px-2 text-white text-sm"
             onClick={() =>
@@ -67,65 +22,68 @@ export function Podcasts({ list }: { list: Result[] }) {
           </button>
         </div>
       </div>
-      <div
-        className={`grid gap-2 ${gridContainer} overflow-auto transition-all`}
-      >
-        {list.map((it, index) => {
-          return (
-            <article
-              key={it.title}
-              id={
-                list.length - 1 === index || (index + 1) % 6 === 0
-                  ? index.toString()
-                  : undefined
-              }
-              className={`grid-row ${gridItemRow} flex flex-col gap-2`}
-            >
-              <img
-                className="h-[11em] rounded-md"
-                src={it.img100}
-                alt={it.title}
-              />
-              <div className="flex flex-col">
-                <span className="text-white">{it.title}</span>
-                <span className="text-white text-xs">{it.subtitle}</span>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      {view === "scroll" ? (
+        <ScrollView list={list} />
+      ) : (
+        <GridView list={list} />
+      )}
     </div>
   );
 }
 
-function PreviousIcon() {
+function GridView({ list }: { list: Result[] }) {
   return (
-    <svg
-      stroke="currentColor"
-      fill="currentColor"
-      stroke-width="0"
-      viewBox="0 0 512 512"
-      height="1.2em"
-      width="1.2em"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M217.9 256L345 129c9.4-9.4 9.4-24.6 0-33.9-9.4-9.4-24.6-9.3-34 0L167 239c-9.1 9.1-9.3 23.7-.7 33.1L310.9 417c4.7 4.7 10.9 7 17 7s12.3-2.3 17-7c9.4-9.4 9.4-24.6 0-33.9L217.9 256z"></path>
-    </svg>
+    <div className="grid gap-2 [grid-template-columns:repeat(6,minmax(16%,1fr))] overflow-auto transition-all">
+      {list.map((it) => {
+        return (
+          <Podcast
+            key={it.title}
+            title={it.title}
+            subtitle={it.subtitle}
+            img100={it.img100}
+            className="grid-row flex flex-col gap-2"
+          />
+        );
+      })}
+    </div>
   );
 }
 
-function NextIcon() {
+function ScrollView({ list }: { list: Result[] }) {
   return (
-    <svg
-      stroke="currentColor"
-      fill="currentColor"
-      stroke-width="0"
-      viewBox="0 0 512 512"
-      height="1.2em"
-      width="1.2em"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M294.1 256L167 129c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.3 34 0L345 239c9.1 9.1 9.3 23.7.7 33.1L201.1 417c-4.7 4.7-10.9 7-17 7s-12.3-2.3-17-7c-9.4-9.4-9.4-24.6 0-33.9l127-127.1z"></path>
-    </svg>
+    <AliceCarousel
+      responsive={{
+        "1024": {
+          items: 6,
+        },
+      }}
+      items={list.map((it) => {
+        return (
+          <Podcast
+            key={it.title}
+            title={it.title}
+            subtitle={it.subtitle}
+            img100={it.img100}
+          />
+        );
+      })}
+    />
+  );
+}
+
+function Podcast({
+  title,
+  subtitle,
+  img100,
+  className,
+}: Pick<Result, "img100" | "title" | "subtitle"> & { className?: string }) {
+  return (
+    <article key={title} className={className}>
+      <img className="h-[11em] rounded-md" src={img100} alt={title} />
+      <div className="flex flex-col">
+        <span className="text-white">{title}</span>
+        <span className="text-white text-xs">{subtitle}</span>
+      </div>
+    </article>
   );
 }
