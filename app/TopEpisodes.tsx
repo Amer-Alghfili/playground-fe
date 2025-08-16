@@ -2,7 +2,7 @@ import React from "react";
 import { Result } from "./page";
 import { usePathname, useRouter } from "next/navigation";
 
-export function Podcasts({ list }: { list: Result[] }) {
+export function TopEpisodes({ list }: { list: Result[] }) {
   const [view, setView] = React.useState<"scroll" | "grid">("scroll");
   const [indexes, setIndexes] = React.useState<number[]>([5]);
 
@@ -40,14 +40,14 @@ export function Podcasts({ list }: { list: Result[] }) {
 
   const gridContainer =
     view === "scroll"
-      ? "auto-cols-[16%]"
+      ? "auto-cols-[33%]"
       : "[grid-template-columns:repeat(6,minmax(16%,1fr))]";
   const gridItemRow = view === "scroll" ? "row-start-1 row-end-1" : null;
 
   return (
     <div className="flex flex-col gap-4">
       <div className="text-white border-b border-b-gray-600 pb-4 flex items-center justify-between">
-        <span>Top Podcasts</span>
+        <span>Top Episodes</span>
         <div className="flex gap-3">
           <div className="flex gap-2">
             <button onClick={scrollToPrev}>
@@ -79,17 +79,9 @@ export function Podcasts({ list }: { list: Result[] }) {
                   ? index.toString()
                   : undefined
               }
-              className={`grid-row ${gridItemRow} flex flex-col gap-2`}
+              className={`max-h-[24em] grid-row ${gridItemRow}`}
             >
-              <img
-                className="h-[11em] rounded-md"
-                src={it.img100}
-                alt={it.title}
-              />
-              <div className="flex flex-col">
-                <span className="text-white">{it.title}</span>
-                <span className="text-white text-xs">{it.subtitle}</span>
-              </div>
+              <img className="w-full h-full" src={it.img60} alt={it.title} />
             </article>
           );
         })}

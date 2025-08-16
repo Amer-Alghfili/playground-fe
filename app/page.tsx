@@ -4,6 +4,7 @@ import axios from "axios";
 import React from "react";
 import useDebounce from "react-debounced";
 import { Podcasts } from "./Podcasts";
+import { TopEpisodes } from "./TopEpisodes";
 
 export type Result = {
   title: string;
@@ -35,7 +36,7 @@ export default function Home() {
             <li>Discover</li>
           </ul>
         </nav>
-        <main className="w-full p-4 flex flex-col gap-12">
+        <main className="w-full p-4 flex flex-col gap-12 overflow-hidden">
           <header className="flex gap-2 items-center">
             <Search onSearch={setList} />
             <button className="bg-blue-950 rounded-lg shrink-0 py-2 px-2 text-white text-sm">
@@ -47,6 +48,7 @@ export default function Home() {
           </header>
           <div className="flex flex-col gap-6">
             <Podcasts list={list} />
+            <TopEpisodes list={list} />
           </div>
         </main>
       </div>
