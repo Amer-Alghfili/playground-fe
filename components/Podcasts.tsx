@@ -1,8 +1,8 @@
 import React from "react";
-import { Result } from "./page";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "react-alice-carousel/lib/alice-carousel.css";
 import AliceCarousel from "react-alice-carousel";
+import { Result } from "@/app/page";
 
 export function Podcasts({ list = [] }: { list: Result[] }) {
   const [view, setView] = React.useState<"scroll" | "grid">("scroll");

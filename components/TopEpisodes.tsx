@@ -1,8 +1,8 @@
 import React from "react";
-import { Result } from "./page";
 import "react-alice-carousel/lib/alice-carousel.css";
 import "react-alice-carousel/lib/alice-carousel.css";
 import AliceCarousel from "react-alice-carousel";
+import { Result } from "@/app/page";
 
 type ViewType = "scroll" | "grid" | "list" | "compact";
 export function TopEpisodes({ list = [] }: { list: Result[] }) {
@@ -16,6 +16,7 @@ export function TopEpisodes({ list = [] }: { list: Result[] }) {
           <select
             className="bg-blue-950 rounded-lg shrink-0 py-2 px-2 text-white text-sm"
             onChange={(e) => setView(e.target.value as ViewType)}
+            value={view}
           >
             <option value="scroll">Scroll Layout</option>
             <option value="grid">Grid Layout</option>
