@@ -40,7 +40,7 @@ function GridView({ list = [] }: { list: Result[] }) {
             key={it.title}
             title={it.title}
             subtitle={it.subtitle}
-            img100={it.img100}
+            img={it.img600}
             className="grid-row flex flex-col gap-2"
           />
         );
@@ -53,6 +53,15 @@ function ScrollView({ list = [] }: { list: Result[] }) {
   return (
     <AliceCarousel
       responsive={{
+        "0": {
+          items: 1,
+        },
+        "400": {
+          items: 2,
+        },
+        "600": {
+          items: 3,
+        },
         "1024": {
           items: 6,
         },
@@ -63,7 +72,8 @@ function ScrollView({ list = [] }: { list: Result[] }) {
             key={it.title}
             title={it.title}
             subtitle={it.subtitle}
-            img100={it.img100}
+            img={it.img600}
+            className="me-2"
           />
         );
       })}
@@ -74,12 +84,12 @@ function ScrollView({ list = [] }: { list: Result[] }) {
 function Podcast({
   title,
   subtitle,
-  img100,
+  img,
   className,
-}: Pick<Result, "img100" | "title" | "subtitle"> & { className?: string }) {
+}: Pick<Result, "title" | "subtitle"> & { img: string; className?: string }) {
   return (
     <article key={title} className={className}>
-      <img className="h-[11em] rounded-md" src={img100} alt={title} />
+      <img className="h-[11em] rounded-md" src={img} alt={title} />
       <div className="flex flex-col">
         <span className="text-white">{title}</span>
         <span className="text-white text-xs">{subtitle}</span>

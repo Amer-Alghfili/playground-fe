@@ -58,6 +58,15 @@ function ScrollView({ list }: { list: Result[] }) {
   return (
     <AliceCarousel
       responsive={{
+        "0": {
+          items: 1,
+        },
+        "400": {
+          items: 2,
+        },
+        "600": {
+          items: 3,
+        },
         "1024": {
           items: 3,
         },
@@ -69,6 +78,7 @@ function ScrollView({ list }: { list: Result[] }) {
             title={it.title}
             subtitle={it.subtitle}
             img100={it.img100}
+            className="me-2 max-h-[7em]"
           />
         );
       })}
@@ -128,7 +138,7 @@ function Episode({
     >
       <img className="h-[6em] rounded-md" src={img100} alt={title} />
       <div className="flex flex-col">
-        <span className="text-white">{title}</span>
+        <span className="text-white text-xs">{subtitle}</span>
         <span className="text-white text-xs">{subtitle}</span>
       </div>
     </article>

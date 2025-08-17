@@ -18,14 +18,6 @@ export type Result = {
 export default function Home() {
   const [list, setList] = React.useState<Result[]>([]);
 
-  // async function call() {
-  //   const res = await axios.get("http://localhost:4000/api/?search=h");
-  //   console.log(res);
-  // }
-  // React.useEffect(() => {
-  //   call();
-  // });
-
   return (
     <>
       <div className="md:hidden">
