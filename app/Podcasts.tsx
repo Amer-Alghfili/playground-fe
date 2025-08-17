@@ -4,7 +4,7 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import "react-alice-carousel/lib/alice-carousel.css";
 import AliceCarousel from "react-alice-carousel";
 
-export function Podcasts({ list }: { list: Result[] }) {
+export function Podcasts({ list = [] }: { list: Result[] }) {
   const [view, setView] = React.useState<"scroll" | "grid">("scroll");
 
   return (
@@ -31,7 +31,7 @@ export function Podcasts({ list }: { list: Result[] }) {
   );
 }
 
-function GridView({ list }: { list: Result[] }) {
+function GridView({ list = [] }: { list: Result[] }) {
   return (
     <div className="grid gap-2 [grid-template-columns:repeat(6,minmax(16%,1fr))] overflow-auto transition-all">
       {list.map((it) => {
@@ -49,7 +49,7 @@ function GridView({ list }: { list: Result[] }) {
   );
 }
 
-function ScrollView({ list }: { list: Result[] }) {
+function ScrollView({ list = [] }: { list: Result[] }) {
   return (
     <AliceCarousel
       responsive={{

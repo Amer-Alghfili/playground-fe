@@ -5,7 +5,7 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import AliceCarousel from "react-alice-carousel";
 
 type ViewType = "scroll" | "grid" | "list" | "compact";
-export function TopEpisodes({ list }: { list: Result[] }) {
+export function TopEpisodes({ list = [] }: { list: Result[] }) {
   const [view, setView] = React.useState<ViewType>("compact");
 
   return (

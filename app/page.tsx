@@ -18,6 +18,14 @@ export type Result = {
 export default function Home() {
   const [list, setList] = React.useState<Result[]>([]);
 
+  // async function call() {
+  //   const res = await axios.get("http://localhost:4000/api/?search=h");
+  //   console.log(res);
+  // }
+  // React.useEffect(() => {
+  //   call();
+  // });
+
   return (
     <>
       <div className="md:hidden">
@@ -66,22 +74,20 @@ function Search({ onSearch }: { onSearch: (result: Result[]) => void }) {
       // kind: podcast
       try {
         const { data } = await axios.get(
-          `https://itunes.apple.com/search?media=podcast&term=${value}`
+          `http://localhost:4000/api?search=${value}`
         );
 
         onSearch(
-          data.results
-            ?.filter((it) => it.kind === "podcast")
-            .map((it) => {
-              return {
-                title: it.trackName,
-                subtitle: it.artistName,
-                img30: it.artworkUrl30,
-                img60: it.artworkUrl60,
-                img100: it.artworkUrl100,
-                img600: it.artworkUrl600,
-              };
-            })
+          data.podcasts.map((it) => {
+            return {
+              title: it.title,
+              subtitle: it.subtitle,
+              img30: it.img30,
+              img60: it.img60,
+              img100: it.img100,
+              img600: it.img600,
+            };
+          })
         );
       } catch (err) {
         console.log(err);
