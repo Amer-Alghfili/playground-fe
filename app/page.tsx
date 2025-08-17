@@ -14,10 +14,14 @@ export type Result = {
   img60: string;
   img100: string;
   img600: string;
+  img160?: string;
 };
 
 export default function Home() {
-  const [list, setList] = React.useState<Result[]>([]);
+  const [list, setList] = React.useState<{
+    podcasts: Result[];
+    topEpisodes: Result[];
+  }>({ podcasts: [], topEpisodes: [] });
 
   return (
     <>
@@ -26,8 +30,8 @@ export default function Home() {
           <Search onSearch={setList} />
         </header>
         <div className="flex flex-col gap-6 px-6 py-6">
-          <Podcasts list={list} />
-          <TopEpisodes list={list} />
+          <Podcasts list={list.podcasts} />
+          <TopEpisodes list={list.topEpisodes} />
         </div>
       </div>
       <div className="hidden md:flex gap-0">
@@ -51,8 +55,8 @@ export default function Home() {
             </button>
           </header>
           <div className="flex flex-col gap-6">
-            <Podcasts list={list} />
-            <TopEpisodes list={list} />
+            <Podcasts list={list.podcasts} />
+            <TopEpisodes list={list.topEpisodes} />
           </div>
         </main>
       </div>
@@ -60,7 +64,11 @@ export default function Home() {
   );
 }
 
-function Search({ onSearch }: { onSearch: (result: Result[]) => void }) {
+function Search({
+  onSearch,
+}: {
+  onSearch: (result: { podcasts: Result[]; topEpisodes: Result[] }) => void;
+}) {
   const debounce = useDebounce(500);
 
   async function onChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -72,8 +80,8 @@ function Search({ onSearch }: { onSearch: (result: Result[]) => void }) {
           `http://localhost:4000/api?search=${value}`
         );
 
-        onSearch(
-          (data.podcasts as Result[]).map((it) => {
+        onSearch({
+          podcasts: (data.podcasts as Result[]).map((it) => {
             return {
               title: it.title,
               subtitle: it.subtitle,
@@ -82,8 +90,19 @@ function Search({ onSearch }: { onSearch: (result: Result[]) => void }) {
               img100: it.img100,
               img600: it.img600,
             };
-          })
-        );
+          }),
+          topEpisodes: (data.topEpisodes as Result[]).map((it) => {
+            return {
+              title: it.title,
+              subtitle: it.subtitle,
+              img30: it.img30,
+              img60: it.img60,
+              img100: it.img100,
+              img600: it.img600,
+              img160: it.img160,
+            };
+          }),
+        });
       } catch (err) {
         console.log(err);
       }

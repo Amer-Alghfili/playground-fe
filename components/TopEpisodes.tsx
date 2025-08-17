@@ -7,6 +7,7 @@ import { Result } from "@/app/page";
 type ViewType = "scroll" | "grid" | "list" | "compact";
 export function TopEpisodes({ list = [] }: { list: Result[] }) {
   const [view, setView] = React.useState<ViewType>("compact");
+  console.log(list);
 
   return (
     <div className="flex flex-col gap-4">
@@ -47,7 +48,7 @@ function GridView({ list }: { list: Result[] }) {
             key={it.title}
             title={it.title}
             subtitle={it.subtitle}
-            img100={it.img100}
+            img160={it.img160}
           />
         );
       })}
@@ -78,7 +79,7 @@ function ScrollView({ list }: { list: Result[] }) {
             key={it.title}
             title={it.title}
             subtitle={it.subtitle}
-            img100={it.img100}
+            img160={it.img160}
             className="me-2 max-h-[7em]"
           />
         );
@@ -96,7 +97,8 @@ function ListView({ list }: { list: Result[] }) {
             key={it.title}
             title={it.title}
             subtitle={it.subtitle}
-            img100={it.img100}
+            img160={it.img160}
+            trim={400}
           />
         );
       })}
@@ -108,16 +110,21 @@ function CompactView({ list }: { list: Result[] }) {
   return (
     <div className="grid gap-2 [grid-template-columns:repeat(6,minmax(33%,1fr))] overflow-auto transition-all">
       {list.map((it) => {
+        const subtitle =
+          it.subtitle.length < 50
+            ? it.subtitle
+            : `${it.subtitle.substring(0, 50)}...`;
+
         return (
           <article key={it.title} className="flex items-center gap-4">
             <img
               className="h-[3em] rounded-md"
-              src={it.img100}
+              src={it.img160}
               alt={it.title}
             />
             <div className="flex flex-col">
               <span className="text-white text-sm">{it.title}</span>
-              <span className="text-white text-xs">{it.subtitle}</span>
+              <span className="text-white text-xs">{subtitle}</span>
             </div>
           </article>
         );
@@ -129,18 +136,25 @@ function CompactView({ list }: { list: Result[] }) {
 function Episode({
   title,
   subtitle,
-  img100,
+  img160,
+  trim = 50,
   className,
-}: Pick<Result, "img100" | "title" | "subtitle"> & { className?: string }) {
+}: Pick<Result, "img160" | "title" | "subtitle"> & {
+  className?: string;
+  trim?: number;
+}) {
+  const trimmedSubtitle =
+    subtitle.length < trim ? subtitle : `${subtitle.substring(0, trim)}...`;
+
   return (
     <article
       key={title}
       className={`bg-[rgba(0,0,0,.1)] rounded-md border border-[#2e2e38] flex items-center gap-4 ${className}`}
     >
-      <img className="h-[6em] rounded-md" src={img100} alt={title} />
+      <img className="h-[6em] rounded-md" src={img160} alt={title} />
       <div className="flex flex-col">
-        <span className="text-white text-xs">{subtitle}</span>
-        <span className="text-white text-xs">{subtitle}</span>
+        <span className="text-white text-xs font-bold">{title}</span>
+        <span className="text-white text-xs">{trimmedSubtitle}</span>
       </div>
     </article>
   );
