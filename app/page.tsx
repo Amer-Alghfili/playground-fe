@@ -3,6 +3,7 @@
 import axios from "axios";
 import React from "react";
 import useDebounce from "react-debounced";
+import Link from "next/link";
 import { Podcasts } from "@/components/Podcasts";
 import { TopEpisodes } from "@/components/TopEpisodes";
 import { Logo } from "../components/Logo";
@@ -40,8 +41,13 @@ export default function Home() {
             <Logo />
           </div>
           <ul className="text-white flex flex-col gap-2">
-            <li>Home</li>
+            <li className="text-blue-400">Home</li>
             <li>Discover</li>
+            <li>
+              <Link href="/about" className="hover:text-blue-400">
+                About Us
+              </Link>
+            </li>
           </ul>
         </nav>
         <main className="w-full p-4 flex flex-col gap-12 overflow-hidden">
